@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Document</title>
+</head>
+<body>
+    <!-- <script>
+        class Calculator{
+            add(a,b){
+                return a+b;
+            }
+        }
+        let cal=new Calculator();
+        console.log(cal.add(3,5));
+        console.log(typeof cal);
+    </script> -->
+
+    <!-- <script>        
+
+const person1=
+{ 
+    name: "anu",
+    greet:function()
+    {
+        console.log("hello"+this.name);
+    }
+}
+console.log(person1.greet());
+const person=
+{   name: "anu",
+    greet:function()
+    {
+        console.log("hello",this.name);
+    }
+}
+        console.log(person.greet());
+        
+    </script> -->
+<!-- //using cls constructor -->
+   <!-- <script>
+         class Person{
+            constructor(name,age)
+            {
+                this.name=name;
+                this.age=age;
+            }
+            greet()
+            {
+                console.log("Hello,my name is "+this.name);
+            }
+        }
+let p1=new Person("priyu",24);
+        console.log(p1.greet());
+        console.log(p1.name);
+        console.log(p1.age); 
+    </script> -->
+
+    <!-- <script>
+        class Person {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;      
+               // console.log(typeof User1);
+            }
+            display() {
+                console.log("Class:", this.name, this.age);
+                
+            }
+        }
+// create objects using class
+        let a1 = new Person("tom", 23); 
+         let a2 = new Person("john", 25);
+
+         a1.display();
+         a2.display();
+         
+// call method
+//The main difference b/w cls and function is there is no need to give functionkeyword in cls 
+function User(name, age) {
+            this.name = name;
+            this.age = age;
+            this.display = function () 
+            {
+                console.log(this.name + " " + this.age);
+            };
+        }
+// create objects
+        let u1 = new User("Jerry", 23);
+        let u2 = new User("Shinchan", 25);
+// use objects
+        u1.display(); // Tom 23
+        u2.display(); // john 2
+
+        console.log(typeof User);
+
+    </script> -->
+<!-- //Inheritance -->
+    <!-- <script>
+        class zs
+        {
+            exam()
+            {
+                console.log("Exam started");
+            }
+        }
+        class gs extends zs{
+            subject()
+            {
+                console.log("JavaScript");
+            }
+        }
+        const obj=new gs();
+        obj.exam();
+        obj.subject();
+        console.log(typeof obj);
+
+        class Person{
+            constructor(name){
+                this.name=name;
+            }
+            showName(){
+                console.log("Name: ",this.name);
+            }
+        }
+        class Student extends Person{
+            constructor(name1,course)
+            {
+                
+                this.name1=name1;
+                this.course=course;
+            }
+            showCourse() {
+                console.log("Name:", this.name1);
+                console.log("Course:", this.course);
+            }
+        }
+            const s1 = new Student("Priyu","JavaScript");
+            s1.showName();
+            s1.showCourse();
+
+    </script> -->
+    <script>
+        class User {
+            #name;
+            get name() {
+                 console.log(user.#name);
+                return this.#name;
+            }
+            set name(val) {
+                this.#name = val;
+            }
+        }
+        const user = new User();
+        user.name = "Tom";
+        console.log(user.name);
+         <!-- console.log(user.#name); -->
+
+         class MathUtil{
+             static add(a,b){
+                return a+b;
+            }
+         }
+         let m=new MathUtil();
+         console.log(m.add(2,3));
+
+         console.log(MathUtil.add(2,3));
+
+    </script>
+    
+</body>
+</html>

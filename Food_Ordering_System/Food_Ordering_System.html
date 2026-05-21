@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app">
+        <header class="page-header">
+            <p class="eyebrow">Fresh Food Delivery</p>
+            <h1>Food Ordering System</h1>
+            <p class="subtitle">Choose multiple dishes, place your order, pay securely, and track every step.</p>
+        </header>
+
+        <nav class="steps" aria-label="Order steps">
+            <button class="step-tab active" data-page="menuPage">1. Menu</button>
+            <button class="step-tab" data-page="orderPage">2. Order</button>
+            <button class="step-tab" data-page="paymentPage">3. Payment</button>
+            <button class="step-tab" data-page="trackingPage">4. Tracking</button>
+        </nav>
+
+        <div id="messageBox" class="message-box info">Select one or more food items to begin.</div>
+
+        <section id="menuPage" class="app-page active">
+            <div class="panel wide-panel">
+                <div class="section-heading">
+                    <h2>Menu</h2>
+                    <p>Pick as many items as you want.</p>
+                </div>
+                <div id="menuList" class="menu-grid"></div>
+                <div class="button-row">
+                    <button id="placeOrderBtn">Place Order</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="orderPage" class="app-page">
+            <div class="panel wide-panel">
+                <div class="section-heading">
+                    <h2>Order Details</h2>
+                    <p>Review your items before payment.</p>
+                </div>
+                <div id="orderDetails" class="order-box">No order placed yet.</div>
+                <div class="button-row">
+                    <button class="outline" data-page="menuPage">Back to Menu</button>
+                    <button id="goToPaymentBtn" class="secondary" disabled>Go to Payment</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="paymentPage" class="app-page">
+            <div class="payment-layout">
+                <div class="payment-card">
+                    <div class="card-chip"></div>
+                    <p class="card-label">FoodPay Secure</p>
+                    <h2>Complete Payment</h2>
+                    <p id="paymentAmount" class="payment-amount">Rs.0</p>
+                    <p class="payment-note">Fast checkout for your freshly prepared meal.</p>
+                    <button id="payNowBtn" class="pay-button" disabled>Pay Now</button>
+                </div>
+
+                <div class="panel">
+                    <h2>Payment Summary</h2>
+                    <div id="paymentSummary" class="order-box">Place an order to see payment details.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trackingPage" class="app-page">
+            <div class="panel wide-panel">
+                <div class="section-heading">
+                    <h2>Delivery Tracking</h2>
+                    <p>Watch your order move from kitchen to doorstep.</p>
+                </div>
+                <ul id="statusList" class="status-list"></ul>
+                <div id="customerMessage" class="customer-message">
+                    Your happy food moment will appear here after payment.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="MenuItem.js"></script>
+    <script src="SpecialItem.js"></script>
+    <script src="Order.js"></script>
+    <script src="PaymentService.js"></script>
+    <script src="DeliveryTracker.js"></script>
+    <script src="FoodOrderingApp.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

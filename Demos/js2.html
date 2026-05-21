@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>Document</title>
+</head>
+<body>
+    <!-- <script>
+        console.log(a);
+        let a=10;
+        console.log(b);
+        var b=10;
+    </script>
+    <script>
+        console.log(b);
+        var b=10;
+    </script> -->
+
+     <!-- <script>
+        function fun1(a,b)
+        {
+            let name="Priyu";
+            console.log("Welcome",name);
+            console.log("Addition:", (a+b));
+            console.log("Subtraction:"+ (a-b));
+            console.log("Multiplying:"+a*b);
+            console.log("Division:"+a/b);
+            
+        }
+        fun1(10,20);
+
+        const fun=function()
+        {
+            console.log("Hello");
+        };
+        fun();
+
+        //arrow functions
+        const greet=()=>{
+            console.log("Hello");
+        }
+        greet();
+        const add = (a, b) => {
+        console.log(a + b)
+        }
+        add(10, 20)
+    </script> -->
+
+    <!-- <script>
+      
+        const fun2=(a,b)=>{
+            console.log("Addition"+ (a + b));
+            console.log("Subtraction" +(a - b));
+            console.log("Multiply: "+ (a * b));
+            console.log("Division: "+(a / b));
+            console.log("Module_Division: "+(a % b));
+        }
+        let a1;
+        let b1;
+        console.log("Enter value a1:"+a1);
+        console.log("Enter value b1:"+b1);
+        fun2(a1,b1);
+    </script> -->
+
+    <!-- 07/04/2026
+ Objects
+    <script>
+        const person={
+            name:"Priyu",
+            Id:"E120"
+        };
+        console.log(person.name);
+        console.log(person['Id']);
+        console.log("name" in person);
+        console.log("city" in person);
+        person.city="Chennai";
+        person.Id="E123";
+        console.log("city" in person);
+        console.log( person['city']);
+        console.log(typeof person);
+
+        delete person.city;
+        console.log(Object.values(person));
+        console.log(Object.keys(person));
+        person.phone=9876543450; 
+
+        console.log(person['phone']=9876543345);
+ 
+      Using_Fuctions 
+
+        const pers = {
+            name: "Anu",
+            greet: function () {
+                console.log("Hello girl");
+            }
+        };
+        pers.greet();
+const person1 = {
+            name: "Anu",
+            greet() {
+                console.log("Hello " +this.name);
+                console.log("Hello " +this.id);
+            }
+        };
+        person1.greet();
+    </script> -->
+
+    <!-- 9/4/26 -->
+    <!-- <script>
+
+        let  name = " Priya";
+        let lname= 'nka';
+        console.log(name+lname);
+        
+        let text = "We are the so-called \"Vikings\" from the north.";
+        console.log(text);
+
+
+          
+        let degree= ` ${name} mca`;
+        console.log(degree);
+        
+        let id=1001;
+        let age='24';
+
+        let text2="My id is "+ id+" and Iam "+age+" years old";
+        let text1=`My id is ${id} and Iam ${age} years old`;
+        console.log(text2);
+        console.log(text1);
+
+        let str=' 123Priya ';
+        let str1=" Hello World"
+        console.log("str: " +str.length+ "str1: "+str1.length);  
+        console.log(typeof(str));
+
+        console.log(str1.charAt(5));
+         console.log(str[3]);
+        console.log(str[3,5]);//only gives last value
+         console.log(str.charAt(-1));
+
+        console.log(str.charAt(-1));//doesn't work
+        console.log(str.at(6));
+        
+
+        console.log(str);
+        console.log(str.trim());
+        console.log(str.trimStart());
+        console.log(str.trimEnd());
+
+      // Case change
+      console.log("Silicing:" +str.slice(2,5));
+       console.log("Silicing:" +str.slice(2,-5));
+      console.log(str.substring(2,5))
+      console.log(str.concat(str1));
+
+      console.log(str.replace("123","Hi"));
+      console.log("a a a".replaceAll("a","b"));
+
+      console.log(typeof(str.split( )));
+    
+      console.log("5".padStart(3,"1"));
+      console.log("5".padEnd(3,"*"));
+      console.log("Hi".repeat(2));
+    </script> -->
+    <!-- <script>
+      console.log("Anu".charCodeAt(1));
+      console.log("i".charCodeAt());
+        console.log("❤️😊".charCodeAt(1));
+        console.log("😊".charCodeAt(0));
+        
+        let isAdult="null";
+        isAdult=Number(isAdult);
+        console.log(isAdult);
+    </script> -->
+
+
+    <!-- 16/04/2026 -->
+     <script>
+        let numbers=[1,2,3];
+        console.log(numbers);
+         console.log(typeof (numbers));
+         let arr=[1,"Hello",3];
+        console.log(arr);
+        console.log(typeof (arr));
+
+        let matrix=[
+                    [1,2],
+                    [3,4] ];
+                console.log(matrix[0][1]);
+
+       let users=[
+                {name:"Priya", age:22}
+                ]
+                console.log(users[0].name);
+
+
+        let arr1=[];
+        arr[0]='Hello';
+        arr[1]=1;
+
+        console.log(arr[0]);
+         a="hello";
+        console.log(typeof a);
+
+        //Objects
+        let obj={
+            name:"abc",
+            age:24
+            }
+                console.log(obj.name);
+        //Maps 
+        let map=new Map();
+       // map.set("name","Priya");
+       // map.set("age",25);
+        
+        map.set(obj);
+        console.log(map.get("name"));
+
+        
+
+let map1 = new Map();
+let student1 = {
+  name: "Anu",
+  age: 16
+};
+map1.set("student1", student1);
+console.log(map1.get("student1"));
+//document.write(map1.get("student1"));
+
+
+     </script>
+
+    </body>
+</html>

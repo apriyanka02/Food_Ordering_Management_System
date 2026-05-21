@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Travel Guide</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+      background: linear-gradient(135deg, #87ceeb, #f7d794);
+      transition: background 0.4s ease;
+    }
+
+    body.sunny {
+      background: linear-gradient(135deg, #56ccf2, #f6d365);
+    }
+
+    body.rainy {
+      background: linear-gradient(135deg, #4b79a1, #8bb3d9);
+    }
+
+    body.cloudy {
+      background: linear-gradient(135deg, #d7dde8, #a7b7c7);
+    }
+
+    body.cold {
+      background: linear-gradient(135deg, #dff6ff, #9ec5df);
+    }
+
+    .page {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 32px 0;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #374151;
+    }
+
+    .search-card,
+    .weather-card,
+    .recommendation-card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 8px;
+      box-shadow: 0 14px 35px rgba(31, 41, 55, 0.16);
+      padding: 24px;
+    }
+
+    .search-card {
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 12px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px 16px;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .message {
+      margin-top: 14px;
+      color: #b91c1c;
+      font-weight: bold;
+      min-height: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #111827;
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .weather-main img {
+      width: 92px;
+      height: 92px;
+    }
+
+    .temperature {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .condition {
+      text-transform: capitalize;
+      color: #4b5563;
+      font-size: 1.1rem;
+      margin-top: 4px;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .detail-box {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .detail-box span {
+      display: block;
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .detail-box strong {
+      font-size: 1.1rem;
+    }
+
+    .recommendation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      list-style: none;
+    }
+
+    .place-card {
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(31, 41, 55, 0.12);
+      animation: slideUp 0.55s ease both;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .place-card:nth-child(1) {
+      background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    }
+
+    .place-card:nth-child(2) {
+      background: linear-gradient(135deg, #ecfdf5, #ccfbf1);
+    }
+
+    .place-card:nth-child(3) {
+      background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    }
+
+    .place-card:nth-child(4) {
+      background: linear-gradient(135deg, #fdf2f8, #fae8ff);
+    }
+
+    .place-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 30px rgba(31, 41, 55, 0.2);
+    }
+
+    .place-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .place-name {
+      min-width: 0;
+      font-size: 1.08rem;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .match-percent {
+      flex: 0 0 auto;
+      background: rgba(255, 255, 255, 0.72);
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.68);
+      border-radius: 999px;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #22c55e);
+      border-radius: 999px;
+      transition: width 1s ease;
+    }
+
+    .place-type {
+      margin-top: 10px;
+      color: #374151;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .recommendation-note {
+      color: #4b5563;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .loader {
+      width: 44px;
+      height: 44px;
+      margin: 22px auto;
+      border: 5px solid #dbeafe;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .weather-main {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+      }
+
+      .details {
+        grid-template-columns: 1fr;
+      }
+
+      .recommendation-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header>
+      <h1>Weather Travel Guide</h1>
+      <p class="subtitle">Check the weather and get simple tourist place ideas for your city.</p>
+    </header>
+
+    <section class="search-card">
+      <form class="search-box" id="searchForm">
+        <input
+          type="text"
+          id="cityInput"
+          placeholder="Enter a city name, like Chennai"
+          aria-label="City name"
+        >
+        <button type="submit">Get Weather</button>
+      </form>
+
+      <p class="message" id="message"></p>
+      <div class="loader hidden" id="loader" aria-label="Loading weather data"></div>
+    </section>
+
+    <section class="grid">
+      <article class="weather-card">
+        <h2 class="section-title">Current Weather</h2>
+
+        <div id="weatherInfo">
+          <div class="weather-main">
+            <img id="weatherIcon" src="" alt="Weather icon">
+
+            <div>
+              <h3 id="cityName">Loading city...</h3>
+              <p class="temperature"><span id="temperature">--</span>&deg;C</p>
+              <p class="condition" id="condition">Please wait</p>
+            </div>
+          </div>
+
+          <div class="details">
+            <div class="detail-box">
+              <span>Humidity</span>
+              <strong><span id="humidity">--</span>%</strong>
+            </div>
+
+            <div class="detail-box">
+              <span>Wind Speed</span>
+              <strong><span id="windSpeed">--</span> km/h</strong>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="recommendation-card">
+        <h2 class="section-title">Tourist Recommendations</h2>
+        <p class="recommendation-note" id="recommendationNote">
+          Recommendations will appear after the weather loads.
+        </p>
+        <ul class="recommendation-grid" id="recommendationList"></ul>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    // Get the HTML elements that JavaScript will update.
+    const searchForm = document.getElementById("searchForm");
+    const cityInput = document.getElementById("cityInput");
+    const message = document.getElementById("message");
+    const loader = document.getElementById("loader");
+
+    const cityName = document.getElementById("cityName");
+    const temperature = document.getElementById("temperature");
+    const condition = document.getElementById("condition");
+    const humidity = document.getElementById("humidity");
+    const windSpeed = document.getElementById("windSpeed");
+    const weatherIcon = document.getElementById("weatherIcon");
+
+    const recommendationNote = document.getElementById("recommendationNote");
+    const recommendationList = document.getElementById("recommendationList");
+
+    // A default city is loaded when the page opens.
+    const defaultCity = "Chennai";
+
+    // This function runs when the user searches for a city.
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const city = cityInput.value.trim();
+
+      if (city === "") {
+        showMessage("Please enter a city name.");
+        return;
+      }
+
+      getWeather(city);
+    });
+
+    // Fetch weather data using async/await.
+    async function getWeather(city) {
+      showLoading(true);
+      showMessage("");
+
+      try {
+        const apiUrl = `https://wttr.in/${encodeURIComponent(city)}?format=j1`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error("API request failed");
+        }
+
+        const data = await response.json();
+
+        if (!data.current_condition || !data.nearest_area) {
+          throw new Error("City not found");
+        }
+
+        displayWeather(data, city);
+      } catch (error) {
+        clearWeather();
+        showMessage("City not found or weather API failed. Please try another city.");
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // Update the weather card with API data.
+    function displayWeather(data, searchedCity) {
+      const current = data.current_condition[0];
+      const area = data.nearest_area[0];
+
+      const selectedCity = area.areaName[0].value;
+      const country = area.country[0].value;
+      const tempC = Number(current.temp_C);
+      const weatherText = current.weatherDesc[0].value;
+      const iconUrl = current.weatherIconUrl[0].value;
+
+      cityName.textContent = `${selectedCity}, ${country}`;
+      temperature.textContent = tempC;
+      condition.textContent = weatherText;
+      humidity.textContent = current.humidity;
+      windSpeed.textContent = current.windspeedKmph;
+      weatherIcon.src = iconUrl;
+      weatherIcon.alt = weatherText;
+
+      updateRecommendations(weatherText, tempC, selectedCity, searchedCity);
+      updateBackground(weatherText, tempC);
+    }
+
+    // City-specific tourist places. Add more cities here as you learn.
+    const cityTouristPlaces = {
+      ooty: [
+        {
+          name: "Government Botanical Garden",
+          type: "Garden and nature walk"
+        },
+        {
+          name: "Ooty Lake",
+          type: "Boating and lakeside view"
+        },
+        {
+          name: "Doddabetta Peak",
+          type: "Mountain viewpoint"
+        },
+        {
+          name: "Rose Garden",
+          type: "Flower garden"
+        }
+      ],
+      chennai: [
+        {
+          name: "Marina Beach",
+          type: "Beach and sunrise view"
+        },
+        {
+          name: "Kapaleeshwarar Temple",
+          type: "Temple and heritage visit"
+        },
+        {
+          name: "Government Museum",
+          type: "Indoor history museum"
+        },
+        {
+          name: "Valluvar Kottam",
+          type: "Monument and culture spot"
+        }
+      ],
+      mumbai: [
+        {
+          name: "Gateway of India",
+          type: "Historic landmark"
+        },
+        {
+          name: "Marine Drive",
+          type: "Seafront walk"
+        },
+        {
+          name: "Chhatrapati Shivaji Maharaj Vastu Sangrahalaya",
+          type: "Museum and indoor attraction"
+        },
+        {
+          name: "Juhu Beach",
+          type: "Beach and street food"
+        }
+      ]
+    };
+
+    // Recommend places based on the city and weather condition.
+    function updateRecommendations(weatherText, tempC, city, searchedCity) {
+      const lowerWeather = weatherText.toLowerCase();
+      const cityKey = getCityKey(searchedCity || city);
+      let note = "";
+      let places = [];
+
+      if (cityTouristPlaces[cityKey]) {
+        note = `Top tourist places in ${city}, adjusted for today's weather.`;
+        places = addWeatherMatch(cityTouristPlaces[cityKey], weatherText, tempC);
+      } else if (tempC <= 15) {
+        note = `It feels cold in ${city}. Choose warm or cozy places.`;
+        places = [
+          { name: "Hill station viewpoints", type: "Scenic outdoor spot", percent: 90 },
+          { name: "Hot cafes", type: "Warm indoor break", percent: 88 },
+          { name: "Indoor markets", type: "Shopping and local food", percent: 82 },
+          { name: "Museums", type: "Indoor attraction", percent: 78 }
+        ];
+      } else if (lowerWeather.includes("rain") || lowerWeather.includes("drizzle") || lowerWeather.includes("thunder")) {
+        note = `Rainy weather in ${city} is better for indoor plans.`;
+        places = [
+          { name: "Museums", type: "Indoor attraction", percent: 96 },
+          { name: "Shopping malls", type: "Shopping and food", percent: 92 },
+          { name: "Art galleries", type: "Indoor art visit", percent: 88 },
+          { name: "Indoor food streets", type: "Food and local snacks", percent: 84 }
+        ];
+      } else if (lowerWeather.includes("cloud") || lowerWeather.includes("overcast")) {
+        note = `Cloudy weather in ${city} is great for relaxed sightseeing.`;
+        places = [
+          { name: "Sightseeing spots", type: "Outdoor city visit", percent: 91 },
+          { name: "Local cafes", type: "Relaxed food stop", percent: 87 },
+          { name: "Historic streets", type: "Heritage walk", percent: 84 },
+          { name: "City viewpoints", type: "View and photos", percent: 80 }
+        ];
+      } else if (lowerWeather.includes("clear") || lowerWeather.includes("sunny")) {
+        note = `Sunny weather in ${city} is perfect for outdoor attractions.`;
+        places = [
+          { name: "Beaches", type: "Outdoor water spot", percent: 96 },
+          { name: "Public parks", type: "Green outdoor area", percent: 92 },
+          { name: "Outdoor monuments", type: "Landmark visit", percent: 88 },
+          { name: "Nature trails", type: "Walking and nature", percent: 85 }
+        ];
+      } else {
+        note = `Here are some balanced travel ideas for ${city}.`;
+        places = [
+          { name: "Popular landmarks", type: "Main tourist spot", percent: 84 },
+          { name: "Local restaurants", type: "Food experience", percent: 82 },
+          { name: "Museums", type: "Indoor attraction", percent: 80 },
+          { name: "Parks", type: "Outdoor relaxation", percent: 76 }
+        ];
+      }
+
+      recommendationNote.textContent = note;
+      recommendationList.innerHTML = "";
+
+      places.forEach(function (place) {
+        const listItem = document.createElement("li");
+        listItem.className = "place-card";
+
+        const placeRow = document.createElement("div");
+        placeRow.className = "place-row";
+
+        const placeName = document.createElement("span");
+        placeName.className = "place-name";
+        placeName.textContent = place.name;
+
+        const matchPercent = document.createElement("span");
+        matchPercent.className = "match-percent";
+        matchPercent.textContent = `${place.percent}% match`;
+
+        const progressTrack = document.createElement("div");
+        progressTrack.className = "progress-track";
+
+        const progressFill = document.createElement("div");
+        progressFill.className = "progress-fill";
+        progressFill.style.width = "0%";
+
+        const placeType = document.createElement("p");
+        placeType.className = "place-type";
+        placeType.textContent = place.type;
+
+        placeRow.appendChild(placeName);
+        placeRow.appendChild(matchPercent);
+        progressTrack.appendChild(progressFill);
+        listItem.appendChild(placeRow);
+        listItem.appendChild(progressTrack);
+        listItem.appendChild(placeType);
+        recommendationList.appendChild(listItem);
+
+        // Small delay lets the browser show the bar filling from left to right.
+        setTimeout(function () {
+          progressFill.style.width = `${place.percent}%`;
+        }, 100);
+      });
+    }
+
+    // Some cities have alternate names in weather APIs.
+    function getCityKey(city) {
+      const normalizedCity = city.toLowerCase().trim();
+
+      if (normalizedCity.includes("ooty") || normalizedCity.includes("udhagamandalam")) {
+        return "ooty";
+      }
+
+      if (normalizedCity.includes("chennai")) {
+        return "chennai";
+      }
+
+      if (normalizedCity.includes("mumbai") || normalizedCity.includes("bombay")) {
+        return "mumbai";
+      }
+
+      return normalizedCity;
+    }
+
+    // Give each city place a percentage based on weather.
+    function addWeatherMatch(places, weatherText, tempC) {
+      const lowerWeather = weatherText.toLowerCase();
+
+      return places.map(function (place) {
+        let percent = 82;
+        const text = `${place.name} ${place.type}`.toLowerCase();
+
+        if (tempC <= 15) {
+          percent = text.includes("garden") || text.includes("lake") || text.includes("peak") ? 90 : 84;
+        } else if (lowerWeather.includes("rain") || lowerWeather.includes("drizzle") || lowerWeather.includes("thunder")) {
+          percent = text.includes("museum") || text.includes("indoor") ? 94 : 72;
+        } else if (lowerWeather.includes("cloud") || lowerWeather.includes("overcast")) {
+          percent = text.includes("view") || text.includes("garden") || text.includes("lake") ? 91 : 85;
+        } else if (lowerWeather.includes("clear") || lowerWeather.includes("sunny")) {
+          percent = text.includes("garden") || text.includes("lake") || text.includes("peak") || text.includes("beach") ? 95 : 88;
+        }
+
+        return {
+          name: place.name,
+          type: place.type,
+          percent: percent
+        };
+      });
+    }
+
+    // Change the page background to match the weather.
+    function updateBackground(weatherText, tempC) {
+      const lowerWeather = weatherText.toLowerCase();
+
+      document.body.className = "";
+
+      if (tempC <= 15) {
+        document.body.classList.add("cold");
+      } else if (lowerWeather.includes("rain") || lowerWeather.includes("drizzle") || lowerWeather.includes("thunder")) {
+        document.body.classList.add("rainy");
+      } else if (lowerWeather.includes("cloud") || lowerWeather.includes("overcast")) {
+        document.body.classList.add("cloudy");
+      } else {
+        document.body.classList.add("sunny");
+      }
+    }
+
+    function showLoading(isLoading) {
+      loader.classList.toggle("hidden", !isLoading);
+    }
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+    function clearWeather() {
+      cityName.textContent = "No city selected";
+      temperature.textContent = "--";
+      condition.textContent = "--";
+      humidity.textContent = "--";
+      windSpeed.textContent = "--";
+      weatherIcon.src = "";
+      weatherIcon.alt = "";
+      recommendationNote.textContent = "Please search for a valid city to see recommendations.";
+      recommendationList.innerHTML = "";
+    }
+
+    // Load the default city when the page first opens.
+    getWeather(defaultCity);
+  </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
